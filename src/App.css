@@ -1,0 +1,276 @@
+/* ==================================
+   Advanced CSS Tricks & Animations
+   ================================== */
+
+/* 1. View Transitions API */
+:root {
+    view-transition-name: none;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 0.5s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-old(root) { animation-name: fade-out-scale; }
+::view-transition-new(root) { animation-name: fade-in-scale; }
+
+@keyframes fade-out-scale {
+    from { opacity: 1; transform: scale(1); filter: blur(0); }
+    to { opacity: 0; transform: scale(0.98); filter: blur(4px); }
+}
+@keyframes fade-in-scale {
+    from { opacity: 0; transform: scale(1.02); filter: blur(4px); }
+    to { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+/* 2. Container Queries */
+.marketplace-container {
+    container-type: inline-size;
+    container-name: marketplace;
+    width: 100%;
+}
+@container marketplace (max-width: 380px) {
+    .asset-data { grid-template-columns: 1fr !important; gap: 0.5rem; }
+    .asset-content { padding: 1rem !important; }
+    .asset-name { font-size: 1.1rem !important; }
+}
+
+/* Safe Layout Fallbacks for Grid Cards */
+.marketplace-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    align-items: stretch;
+}
+.asset-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.asset-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.asset-content .btn {
+    margin-top: auto !important;
+}
+
+/* ==================================
+   New Modules (Pillars, Deep Dive, Roadmap)
+   ================================== */
+
+.text-sm { font-size: 0.85rem; }
+
+.pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+.pillar-card {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.pillar-card h3 {
+    font-size: 1.15rem;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 1rem;
+    letter-spacing: -0.01em;
+}
+.pillar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.pillar-item h4 {
+    color: var(--accent);
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+}
+.pillar-item p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.deep-dive-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    min-width: 600px; 
+}
+.deep-dive-table th, .deep-dive-table td {
+    padding: 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--glass-border);
+}
+.deep-dive-table th {
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+}
+.deep-dive-table tr {
+    transition: background-color 0.3s;
+}
+.deep-dive-table tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+.deep-dive-table td:first-child {
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+.advantages-grid .trust-module {
+    text-align: left;
+    padding: 2.5rem;
+    border-top: 1px solid var(--glass-border);
+    border-radius: 16px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+}
+
+.roadmap-timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 3rem auto 0;
+    padding-left: 2.5rem;
+    border-left: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.roadmap-item {
+    position: relative;
+    padding-bottom: 3.5rem;
+}
+.roadmap-item:last-child {
+    padding-bottom: 0;
+}
+.roadmap-item::before {
+    content: '';
+    position: absolute;
+    left: -2.85rem;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--slate-950);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.roadmap-phase {
+    font-family: monospace;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+}
+.roadmap-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+}
+
+@media (max-width: 900px) {
+    .pillars-grid { grid-template-columns: 1fr; }
+}
+
+/* ==================================
+   Futuristic Hover & Interaction Effects
+   ================================== */
+
+/* Neon Pulsation */
+@keyframes neon-glow {
+  0% { box-shadow: 0 0 5px var(--accent); }
+  50% { box-shadow: 0 0 20px var(--accent), 0 0 30px rgba(125, 211, 252, 0.4); }
+  100% { box-shadow: 0 0 5px var(--accent); }
+}
+.neon-pulse:hover {
+  animation: neon-glow 1.5s infinite alternate;
+  will-change: box-shadow;
+}
+
+/* 3D Rotation */
+.card-3d {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform;
+}
+.card-3d:hover {
+  transform: perspective(1000px) rotateY(4deg) rotateX(2deg) translateY(-5px);
+  z-index: 10;
+}
+
+/* Magnetic Button Transition */
+.magnetic-btn {
+  transition: transform 0.3s ease-out, background 0.3s, border 0.3s;
+  will-change: transform;
+}
+
+/* Animated Gradient Borders */
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes rotate-gradient {
+  to { --angle: 360deg; }
+}
+.gradient-border-wrap {
+  position: relative;
+  background: var(--slate-950);
+  border-radius: 17px;
+}
+.gradient-border-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 19px;
+  background: conic-gradient(from var(--angle), var(--glass-border), var(--accent), var(--blue-950), var(--glass-border));
+  z-index: -1;
+  animation: 4s rotate-gradient linear infinite;
+  opacity: 0.6;
+}
+
+/* Skeleton Loaders */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+  border-radius: 4px;
+  color: transparent !important;
+  pointer-events: none;
+  min-height: 1.2em; /* Ensure structural space */
+}
+.skeleton * {
+  opacity: 0;
+}
+
+/* Parallax Float */
+@keyframes float-y {
+    0% { transform: translateY(0px) rotateX(2deg) rotateY(-2deg); }
+    100% { transform: translateY(-15px) rotateX(-2deg) rotateY(2deg); }
+}
+.parallax-float {
+    animation: float-y 4s ease-in-out infinite alternate;
+}
+
+/* Respect Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
